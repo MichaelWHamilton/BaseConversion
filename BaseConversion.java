@@ -26,10 +26,22 @@ public class BaseConversion {
                     {
                         System.out.println("You picked DECIMAL");
                         System.out.println("What base would you like to convert " + number + " to?");
-                        System.out.println("Pick a base from 2-9");
+                        System.out.println("1. Binary \n2. Hexadecimal");
                         System.out.print("New base: ");
-                        int baseTo = 10;
-                        baseTo = keyboard.nextInt();
+                        int baseTo = 0;
+                        int chosenBase = keyboard.nextInt();
+                        if(chosenBase == 1)
+                        {
+                            baseTo = 2;
+                        }
+                        else if(chosenBase==2)
+                        {
+                            baseTo = 16;
+                        }
+
+                        
+                        //int baseTo = 10;
+                        //baseTo = keyboard.nextInt();
                         System.out.println("Converting base to " + baseTo);
                         convertDecimalToBase(baseTo, number);
                         break;
@@ -81,6 +93,24 @@ public class BaseConversion {
         { 
             int temp = number / baseTo;   //22/16 = 1
             remainder = number - baseTo * temp; // 22 - 16 * 1
+
+            // if(baseTo==16)
+            // {
+            //     String remainderBase16 = "A";
+            //     if(remainder >= 10)
+            //     {
+            //         int increment = remainder%10;
+            //         remainderBase16 += increment;
+            //         answer = remainderBase16 + answer;
+            //         number = temp;
+            //     }
+            // }
+            // else
+            // {
+            //     answer = remainder + answer;
+            //     number = temp;
+            // }
+
             answer = remainder + answer;
             number = temp;  
             
