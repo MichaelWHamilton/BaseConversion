@@ -1,8 +1,9 @@
 import java.util.Scanner;
 
-public class BaseConversion {
-    public static void main(String[] args) {
-        
+public class BaseConversion 
+{
+    public static void main(String[] args) 
+    {
         //convertDecimalToBase(16, 100);
         //convertBaseToDecimal(2, 100);
 
@@ -13,13 +14,16 @@ public class BaseConversion {
         //1 ask for type of # DEC BIN HEX FLOAT
         while(loop)
         {
-            try {
-                System.out.println("Type a number and base you wish to convert! Choices include:");
-                System.out.println("1. Decimal\n2. Binary\n3. Hexadecimal\n4. Float");
-                System.out.print("Number Base/Type: ");
-                int choice = keyboard.nextInt();
-                System.out.print("Number Value: ");
+            try 
+            {
+                System.out.println("Pick what number and base you wish to convert!");
+                
+                System.out.print("Type your starting number: ");
                 int number = keyboard.nextInt();
+                System.out.println("1. Decimal\n2. Binary\n3. Hexadecimal\n4. Float");
+                System.out.print("Pick the base of your number (1-4): ");
+                int choice = keyboard.nextInt();
+                
                 switch(choice)
                 {
                     case 1:
@@ -39,7 +43,6 @@ public class BaseConversion {
                             baseTo = 16;
                         }
 
-                        
                         //int baseTo = 10;
                         //baseTo = keyboard.nextInt();
                         System.out.println("Converting base to " + baseTo);
@@ -61,14 +64,20 @@ public class BaseConversion {
                         convertBaseToDecimal(baseFrom, number);
                         break;
                     }
+                    case 4:
+                    {
+                        System.out.println("You picked float!");
+                    }
                     default:
                     {
                         System.out.println("Something went wrong");
                         break;
                     }
                 }
-            } catch (Exception e) {
-                System.out.println("Please enter a number 1, 2, 3 for valid input.");
+            } 
+            catch (Exception e) 
+            {
+                System.out.println("Something went wrong.");
                 keyboard.nextLine();
             }
             
@@ -81,38 +90,49 @@ public class BaseConversion {
         }
     }
 
-    // need number and base converting to
-    public static void convertDecimalToBase(int baseTo, int number) {
+    public static void convertDecimalToBase(int baseTo, int number) 
+    {
         //int baseTo = 16;
         //int number = 22;
         //convert base to other then use params
-
+        
         int remainder;
         String answer = "";
+        int temp;
+        
         while(number > 0)
         { 
-            int temp = number / baseTo;   //22/16 = 1
-            remainder = number - baseTo * temp; // 22 - 16 * 1
+            temp = number / baseTo;   //22/16 = 1
+            // remainder = number - baseTo * temp; // 22 - 16 * 1
+            // answer = remainder + answer;
+            // number = temp; 
+            
+            if(baseTo == 16) // hex
+            { 
+                remainder = number - baseTo * temp;
+                char hexadecimalOverTen = 'A';
+                
+                if(remainder >= 10) 
+                {
+                    hexadecimalOverTen += remainder - 10;
+                    answer = hexadecimalOverTen + answer;
+                    number = temp;
+                }
+                else
+                {
+                    //remainder = number - baseTo * temp; // 22 - 16 * 1
+                    answer = remainder + answer;
+                    number = temp;
+                }
+            }
+            else // bionary
+            {
+                remainder = number - baseTo * temp; // 22 - 16 * 1
+                answer = remainder + answer;
+                number = temp;
+            }
 
-            // if(baseTo==16)
-            // {
-            //     String remainderBase16 = "A";
-            //     if(remainder >= 10)
-            //     {
-            //         int increment = remainder%10;
-            //         remainderBase16 += increment;
-            //         answer = remainderBase16 + answer;
-            //         number = temp;
-            //     }
-            // }
-            // else
-            // {
-            //     answer = remainder + answer;
-            //     number = temp;
-            // }
-
-            answer = remainder + answer;
-            number = temp;  
+             
             
             //rem = 22 / 16 = 1
             // temp = 22 - 16 * 1 = 6
@@ -123,20 +143,50 @@ public class BaseConversion {
     }
 
     // need the number and base the number is 
-    public static void convertBaseToDecimal(int baseFrom, int number) {
+    public static void convertBaseToDecimal(int baseFrom, int number) 
+    {
         //int baseFrom = 16;
         
-        String num = "15";
-        num = String.valueOf(number);
+        //String num = "15";
+        String num = String.valueOf(number);
+        //num = "1a";
         int answer = 0;
         int j = 0;
         for(int i = num.length()-1; i >= 0; i--)
         {
-            int value = num.charAt(i) - '0';
-            answer += value * Math.pow(baseFrom, j);
-            System.out.println(answer);
+            int temp;
+            if(baseFrom == 16)
+            {
+                char value = num.charAt(i);
+                if(value >= '0' && value <= '9')
+                {
+                    //solve nfor numbers
+                    temp = value - '0';
+                    answer += temp * Math.pow(baseFrom, j);
+                }
+                else
+                {
+                    //solve for letters
+                    // A = 65, '7' = 55
+                    value = Character.toUpperCase(value);
+                    temp = value - '7';
+                    answer += temp * Math.pow(baseFrom, j);
+                }
+            }
+            else
+            {
+                int value = num.charAt(i) - '0';
+                answer += value * Math.pow(baseFrom, j);
+                System.out.println(answer);
+            }
+
+
+            // int value = num.charAt(i) - '0';
+            // answer += value * Math.pow(baseFrom, j);
+            // System.out.println(answer);
             j++;
         }
+        System.out.println("Your new number is " + answer);
     }
 
 }
