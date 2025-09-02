@@ -7,8 +7,8 @@ public class BaseConversion
         //convertDecimalToBase(16, 100);
         //convertBaseToDecimal(2, 100);
 
-        System.out.println("Assignment 1 Number converter:" + "/n");
-        String convertFrom;
+        System.out.println("Assignment 1 Number converter:\n");
+        // String convertFrom;
         boolean loop = true;
         Scanner keyboard = new Scanner(System.in);
         //1 ask for type of # DEC BIN HEX FLOAT
@@ -18,12 +18,21 @@ public class BaseConversion
             {
                 System.out.println("Pick what number and base you wish to convert!");
                 
+                // Since hexadecimal can include string i decided to accept all the number inputs as string then make them ints if i need to
+
                 System.out.print("Type your starting number: ");
-                int number = keyboard.nextInt();
+                String number = keyboard.next();
+
                 System.out.println("1. Decimal\n2. Binary\n3. Hexadecimal\n4. Float");
+
                 System.out.print("Pick the base of your number (1-4): ");
                 int choice = keyboard.nextInt();
                 
+
+                int baseTo = 0;
+                String baseToDecAnswer = "";
+                String decToBaseAnswer = "";
+                int chosenBase = 0;
                 switch(choice)
                 {
                     case 1:
@@ -31,9 +40,9 @@ public class BaseConversion
                         System.out.println("You picked DECIMAL");
                         System.out.println("What base would you like to convert " + number + " to?");
                         System.out.println("1. Binary \n2. Hexadecimal");
-                        System.out.print("New base: ");
-                        int baseTo = 0;
-                        int chosenBase = keyboard.nextInt();
+                        
+                        System.out.println("Enter 1 or 2: ");
+                        chosenBase = keyboard.nextInt();
                         if(chosenBase == 1)
                         {
                             baseTo = 2;
@@ -43,30 +52,71 @@ public class BaseConversion
                             baseTo = 16;
                         }
 
-                        //int baseTo = 10;
-                        //baseTo = keyboard.nextInt();
-                        System.out.println("Converting base to " + baseTo);
-                        convertDecimalToBase(baseTo, number);
+                        decToBaseAnswer = convertDecimalToBase(baseTo, number);
+                        System.out.println("You successfully converted " + number + " to " + decToBaseAnswer);
+
                         break;
                     }
                     case 2:
                     {
                         System.out.println("You picked BINARY");
                         int baseFrom = 2;
-                        convertBaseToDecimal(baseFrom, number);
+
+                        System.out.println("What base would you like to convert " + number + " to?");
+                        System.out.println("1. Decimal \n2. Hexadecimal\n3.float");
+                        chosenBase = keyboard.nextInt();
+
+                        if(chosenBase == 1)
+                        {
+                            baseToDecAnswer = convertBaseToDecimal(baseFrom, number);
+                            System.out.println("You successfully converted " + number + " to " + baseToDecAnswer);
+                        }
+                        else if(chosenBase == 2)
+                        {
+                            baseTo = 16;
+                            baseToDecAnswer = convertBaseToDecimal(baseFrom, number);
+                            decToBaseAnswer = convertDecimalToBase(baseTo, baseToDecAnswer);
+                            System.out.println("You successfully converted " + number + " to " + decToBaseAnswer);
+                        }
+                        else if(chosenBase == 3)
+                        {
+                            baseTo = 10;
+                            convertFloat(baseTo, number);
+                        }
+                        
                         break;
                     }
                     case 3:
                     {
                         System.out.println("You picked HEXADECIMAL");
-                        convertFrom = "hexadecimal";
+
                         int baseFrom = 16;
-                        convertBaseToDecimal(baseFrom, number);
+
+                        System.out.println("What base would you like to convert " + number + " to?");
+                        System.out.println("1. Decimal \n2. Binary");
+                        chosenBase = keyboard.nextInt();
+
+                        if(chosenBase == 1) 
+                        {
+                            baseToDecAnswer = convertBaseToDecimal(baseFrom, number);
+                            System.out.println("You successfully converted " + number + " to " + baseToDecAnswer);
+                        }
+                        else if(chosenBase == 2)
+                        {
+                            baseTo = 2;
+                            baseToDecAnswer = convertBaseToDecimal(baseFrom, number);
+                            decToBaseAnswer = convertDecimalToBase(baseTo, baseToDecAnswer);
+                            System.out.println("You successfully converted " + number + " to " + decToBaseAnswer);
+                        }
+
                         break;
                     }
                     case 4:
                     {
-                        System.out.println("You picked float!");
+                        System.out.println("You picked float! \nConverting float to binary!");
+                        baseTo = 2; // float is only ocnverted to binary, no choice needed and baseTo is known
+                        convertFloat(baseTo, number);
+
                     }
                     default:
                     {
@@ -88,14 +138,15 @@ public class BaseConversion
                 loop = false;
             }
         }
+        keyboard.close();
     }
 
-    public static void convertDecimalToBase(int baseTo, int number) 
+    public static String convertDecimalToBase(int baseTo, String num) 
     {
         //int baseTo = 16;
         //int number = 22;
         //convert base to other then use params
-        
+        int number = Integer.valueOf(num);
         int remainder;
         String answer = "";
         int temp;
@@ -139,25 +190,22 @@ public class BaseConversion
             // answer = temp + answer = 1 + "" = "1"
             //number = temp = 6 
         }
-        System.out.println(answer);
+        //System.out.println(answer);
+        return answer;
     }
 
     // need the number and base the number is 
-    public static void convertBaseToDecimal(int baseFrom, int number) 
+    public static String convertBaseToDecimal(int baseFrom, String number) 
     {
-        //int baseFrom = 16;
-        
-        //String num = "15";
-        String num = String.valueOf(number);
-        //num = "1a";
+
         int answer = 0;
         int j = 0;
-        for(int i = num.length()-1; i >= 0; i--)
+        for(int i = number.length()-1; i >= 0; i--)
         {
             int temp;
             if(baseFrom == 16)
             {
-                char value = num.charAt(i);
+                char value = number.charAt(i);
                 if(value >= '0' && value <= '9')
                 {
                     //solve nfor numbers
@@ -175,7 +223,7 @@ public class BaseConversion
             }
             else
             {
-                int value = num.charAt(i) - '0';
+                int value = number.charAt(i) - '0';
                 answer += value * Math.pow(baseFrom, j);
                 System.out.println(answer);
             }
@@ -186,7 +234,13 @@ public class BaseConversion
             // System.out.println(answer);
             j++;
         }
-        System.out.println("Your new number is " + answer);
+        //System.out.println("Your new number is " + answer);
+        return String.valueOf(answer);
+    }
+
+    public static void convertFloat(int baseTo, String number)
+    {
+        
     }
 
 }
