@@ -15,11 +15,11 @@ public class BaseConversion
             {
                 System.out.println("Pick what number and base you wish to convert! Example Input:\n32\n101010\n2F\n8.125");
                 
-                // Since hexadecimal can include string i decided to accept all the number inputs as string then make them ints if i need to as i go
+                // Since hexadecimal can include letters i decided to accept all the inputs as strings then make them different types if i need to as i go
                 // general process, ask for starting number, what base that number is, then use a switch and ask what conversion to be doine
-                // try catch to catch bad input in the loop
-                // each method operates similarly, takes the number and base converitng to or from depending if converting to decimal, or another base, 
-                // and then returns a string built with the final answer and print statement afterwards
+                // try catch user to catch bad input
+                // each method call operates similarly, takes the number and base converting to or from  
+                // then returns a string built with the final answer and print statement afterwards
 
                 System.out.print("Type your starting number: ");
                 String number = keyboard.next();
